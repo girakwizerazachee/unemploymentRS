@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {% block pageContent %}
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-default rounded-0 shadow ">
+        <div class="card-header">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+                <h4 class="card-title fw-bold">User Management</h4>
+                
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container-fluid">
+                <table class="table table-bordered">
+                    <colgroup>
+                        
+                        <col width="15%">
+                        <col width="15%">
+                        <col width="15%">
+                        
+                        <col width="15%">
+                        <col width="10%">
+                        <col width="10%">
+                        <col width="10%">
+                    </colgroup>
+                    <thead>
+                        <tr class="bg-gradient bg-primary bg-opacity-50 text-light">
+                            
+                            <th class="px-2 py-2 text-center">First Name</th>
+                            <th class="px-2 py-2 text-center">Last Name</th>
+                            <th class="px-2 py-2 text-center">User Type</th>
+                           
+                            <th class="px-2 py-2 text-center">address</th>
+                            <th class="px-2 py-2 text-center">Avatar</th>
+                            <th class="px-2 py-2 text-center">Contact</th>
+                            <th class="px-2 py-2 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            
+                            <td class="px-2 py-1 align-middle">{{ user.user.first_name }}</td>
+                            <td class="px-2 py-1 align-middle">{{ user.user.last_name }}</td>
+                            <td class="px-2 py-1 align-middle">{% if user.user_type == 1 %} <strong>Admin</strong>  {% else %} Active {% endif %}</td>
+                        
+                         
+                            
+                            <td class="px-2 py-1 align-middle">{{ user.address }}</td>
+                            <td class="px-2 py-1 align-middle"><span class="me-2"><img src="{{ user.avatar.url }}" alt="User Avatar" id="user-avatar" class="img-thumbnail rounded-circle"></span></td>
+                            <td class="px-2 py-1 align-middle">{{ user.contact }}</td>
+                            <td class="px-2 py-1 align-middle text-center">
+                                
+                                <button class="btn btn-outline-danger btn-sm delete-data" type="button" data-id="{{ user.pk }}" title="Delete">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %} {% if not users %}
+                        <tr>
+                            <td class="th px-2 py-1 text-center" colspan="5">No Data</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock pageContent %} {% block ScriptBlock %}
+<script>
+    $(function() {
+        $('.delete-data').click(function() {
+            _conf("Are you sure to delete this user permanently?", "delete_user", [$(this).attr('data-id')])
+        })
+    })
+
+    function delete_user($id) {
+        start_loader();
+        var _this = $(this)
+        $('.err-msg').remove();
+        var el = $('<div>')
+        el.addClass("alert alert-danger err-msg")
+        el.hide()
+        $.ajax({
+            url: '{% url "delete-user" %}',
+            headers: {
+                'X-CSRFToken': "{{csrf_token}}"
+            },
+            method: 'POST',
+            data: {
+                id: $id
+            },
+            dataType: 'json',
+            error: err => {
+                console.log(err)
+                el.text('An error occurred.')
+                el.show('slow')
+                end_loader()
+            },
+            success: function(resp) {
+                if (resp.status == 'success') {
+                    location.reload()
+                } else if (!!resp.msg) {
+                    el.text('An error occurred.')
+                    el.show('slow')
+                } else {
+                    el.text('An error occurred.')
+                    el.show('slow')
+                }
+                end_loader()
+            }
+        })
+    }
+</script>
+{% endblock ScriptBlock %}
