@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% load humanize %} {% block pageContent %}
+
+<!--Section: Content-->
+<div class="row" id="MyData">
+
+
+    <section class="text-center">
+        <div class="input-group justify-content-center">
+          <div class="form-outline">
+            <form action="{% url 'search' %}">
+            <input id="search-input"  id="form1" name="search_query" class="form-control bg-light text-dark" required />
+            <label class="form-label" for="form1">Search</label>
+          </div>
+          <button id="search-button" type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        </div>
+    </section>
+
+<section class="text-center">
+    <h4 class="mb-5"><strong>All Posts</strong></h4>
+
+    <div class="row">
+        {% if posts %}
+        {% for post in posts %}
+        <div class="col-lg-4 col-md-6 mb-4" id="MyRow">
+            <div class="card shadow border" id="Data">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <img src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" class="img-fluid post-banner bg-gradient bg-dark" />
+                    <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <div class="card-text truncate-3">{{ post.blog_post|safe }} </div>
+                    <a href="{% url 'view-post' post.id %}" class="btn btn-primary">Read More..</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif%}
+
+
+    </div>
+    {% if not posts %}
+    <center>No post has been posted yet</center>
+    {% endif %}
+
+</section>
+
+
+</div> 
+</div>
+{% endblock pageContent %}
+
+<script>
+
+("#search").on("keyup", function(){
+    var value = $(this).val();
+    console.log(value);
+    $("#MyData #MyRow").each(function(e){
+      if(e !== -1){
+        $go = $(this)
+
+        $go.find('#Data').each(function(){
+          var id = $(this).text();
+
+          if(id.indexOf(value) !==0 && id.toLowerCase().indexOf(value.toLowerCase()) < 0){
+            $go.hide();
+
+          }
+          else {
+            $go.show();
+            return false;
+          }
+        });
+      }
+      var isNone = $("#MyData #MyRow:not('#MyRow'):visible");
+
+      if(isNone.length == 0){
+        $("#no-result").text("No result Found").show();
+
+      }
+      else {
+        $("#no-result").text("No result Found").hide();
+
+      }
+    })
+  })
+</script>
