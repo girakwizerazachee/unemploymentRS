@@ -51,11 +51,14 @@ def logoutuser(request):
     
 def home(request):
 
-     posts = Post.objects.filter(status=1)
-     context['posts'] = posts
-     context['page_title'] = 'Home'
-            
-     return render(request, "home.html", context)
+    posts = Post.objects.filter(status=1)
+    page = Paginator(posts, 10)
+    page_list = request.GET.get('page')
+    page = page.get_page(page_list)
+    context['page_title'] = "Home"
+    context['page'] = page
+    
+    return render(request, "home.html", context)
 
 def search(request):
     search  = ''

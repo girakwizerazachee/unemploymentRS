@@ -7,12 +7,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> {% if page_title %}
-    <title>{{ page_title }} | Simple Blog Site</title>
+    <title>{{ page_title }} | URSS</title>
     {% else %}
-    <title>UERR</title>
+    <title>URSS</title>
     {% endif %}
       <!-- Favicons -->
-  <link href="{% static 'blogApp/assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'blogApp/assets/img/favicon copy.png' %}" rel="icon">
   <link href="{% static 'blogApp/assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
@@ -53,7 +53,7 @@
 <body>
 
     {% block TopNavigation %} {% include "TopNavigation.html" %} {% endblock TopNavigation %}
-    <main class="my-5">
+    <main class="my-5 height-100%">
         <div class="container">
             {% if messages %}
             <div class="row">
@@ -73,7 +73,7 @@
             </div>{% endif %} {% block pageContent %} {% endblock pageContent %}
 
         </div>
-    </main>
+    
     {% block ScriptBlock %} {% endblock ScriptBlock %}
     <div class="modal fade" id="uni_modal" role='dialog'>
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -108,13 +108,14 @@
     </div>
 
     <!--Footer-->
-    <footer class="bg-light text-lg-start my-3 footer-fixed-bottom">
+    <div class="footer navbar-fixed-bottom">
+    <footer class="bg-light text-lg-start footer-fixed-bottom">
        
 
         <hr class="m-0" /> 
 
         <div class="text-center py-0 align-items-center">
-            <p>Follow MDB on social media</p>
+            <p>Follow URSS on social media</p>
             <a href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" class="btn btn-primary m-1" role="button" rel="nofollow" target="_blank">
                 <i class="fab fa-youtube"></i>
             </a>
@@ -130,12 +131,14 @@
         </div> 
 
         <!-- Copyright -->
-        <div class="text-center  p-3"  style="background-color: rgba(0, 0, 0, 0.2);">
+        <div class="text-center  p-5"  style="background-color: rgba(0, 0, 0, 0.2);">
             © {% now 'Y' %} Copyright:
             Unemployment Reduction
         </div>
         <!-- Copyright -->
     </footer>
+    </div>
+</main>
     <script>
         const loader = $('<div>')
         loader.attr('id', 'pre-loader')

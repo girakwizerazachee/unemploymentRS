@@ -1,8 +1,21 @@
 {% extends "base.html" %} {% load humanize %} {% block pageContent %}
 
 <!--Section: Content-->
+<div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+  <form action="" method="post" role="form">
+    <div class="row">
+      <div class="form-group">
+       
+        <input type="text" name="name" class="form-control-lg form-control-block" id="name" placeholder="Your Name" required>
+      </div>
+    </div>
+  </form> 
+</div>     
 <main>
+
+ 
 <div class="row" id="MyData">
+
 
 
 
@@ -27,29 +40,58 @@
     <h4 class="mb-5"><strong></strong></h4>
 
     <div class="row">
-        {% if posts %}
-        {% for post in posts %}
-        <div class="col-lg-4 col-md-6 mb-4" id="MyRow">
-            <div class="card shadow border" id="Data">
-                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" class="img-fluid post-banner bg-gradient bg-dark" />
-                    <a href="#!">
-                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                    </a>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ post.title }}</h5>
-                    <div class="card-text truncate-3">{{ post.blog_post|safe }} </div>
-                    <a href="{% url 'view-post' post.id %}" class="btn btn-primary">Read More..</a>
-                </div>
-            </div>
-        </div>
+        {% if page %}
+        {% for post in page %}
+            
+        <div class="card  py-1 p-2 shadow " style="width: 20rem;">
+          <img class="card-img-top" src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{post.blog_post|slice:"3:8" }}</p>
+          </div>
+         
+          <div class="card-body">
+            <a  href="{% url 'view-post' post.id %}"  class="btn  btn-primary">Read more..</a>
+           
+          </div>
+        </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
         {% endfor %}
+        <hr/>
+        <div class="container">
+          <div class="row text-lg-start"><h5>page :{{page.number}}/{{page.paginator.num_pages}}</h5></div>
+          <div class="row">
+              <div class="col">
+                  <nav aria-label="...">
+                      <ul class="pagination">
+                        <li class="page-item ">
+                          {% if page.has_previous %}
+                          <a class="page-link" href="{% url 'home-page' %}?page={{page.previous_page_number}}" >Previous</a>
+                          {% endif %}
+                        </li>
+                        {% for num_page in page.paginator.page_range %}
+                        <br/>
+                        {% if page.number == num_page%}
+                        <li class="page-item active"><a class="page-link" href="{% url 'home-page' %}?page={{num_number}}">{{num_page}}</a></li>
+                        {% endif %}
+                        <br/>
+                        {%endfor%}
+                        <li class="page-item">
+                          {% if page.has_next %}
+                          <a class="page-link" href="{% url 'home-page' %}?page={{page.next_page_number}}">Next</a>
+                          {% endif %}
+                        </li>
+                      </ul>
+                    </nav>
+              </div>
+          </div>
+      </div>
         {% endif%}
 
 
     </div>
-    {% if not posts %}
+    {% if not page %}
     <center>No post has been posted yet</center>
     {% endif %}
 
