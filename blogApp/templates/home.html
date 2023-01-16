@@ -34,7 +34,7 @@
           <img class="card-img-top" src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{post.blog_post|safe }}</p>
+            <p class="card-text">{{post.blog_post|slice:"3:8" }}</p>
           </div>
          
           <div class="card-body">

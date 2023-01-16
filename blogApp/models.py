@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     dob = models.DateField(blank=True, null = True)
     address = models.TextField(blank=True, null = True)
     avatar = models.ImageField(blank=True, null = True, upload_to= 'images/')
-    user_type = models.IntegerField(default = 1)
+    user_type = models.IntegerField(default = 2)
 
 
     def __str__(self):
