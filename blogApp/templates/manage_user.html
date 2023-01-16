@@ -46,7 +46,7 @@
                             
                             <td class="px-2 py-1 align-middle">{{ user.address }}</td>
                             <td class="px-2 py-1 align-middle"><span class="me-2"><img src="{{ user.avatar.url }}" alt="User Avatar" id="user-avatar" class="img-thumbnail rounded-circle"></span></td>
-                            <td class="px-2 py-1 align-middle">{{ user.contact }}</td>
+                            <td class="px-2 py-1 align-middle">{% if user.contact %} 0{{ user.contact }} {% else %}{{ user.contact }} {% endif %}</td>
                             <td class="px-2 py-1 align-middle text-center">
                                 
                                 <button class="btn btn-outline-danger btn-sm delete-data" type="button" data-id="{{ user.pk }}" title="Delete">

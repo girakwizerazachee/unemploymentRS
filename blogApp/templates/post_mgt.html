@@ -1,4 +1,15 @@
 {% extends 'base.html' %} {% block pageContent %}
+{% if user.profile.contact == ""%}
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card card-default rounded-0 shadow ">
+        <div class="card-header">
+            <div class="d-flex w-100 align-items-center justify-content-between">
+                <h4 class="card-title fw-bold">You must update your profile to post</h4>
+            </div>
+        </div>
+    </div>
+</div>
+{%else%}
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card card-default rounded-0 shadow ">
         <div class="card-header">
@@ -44,7 +55,12 @@
                             <td class="px-2 py-1 align-middle text-center">
                                 {% if post.status == 1 %}
                                 <span class="badge bg-primary rounded-pill px-3">Published</span> {% else %}
-                                <span class="badge bg-secondary rounded-pill px-3">Unpublished</span> {% endif %}
+                                {% if user.profile.user_type == 1%}
+                                <span class="badge bg-secondary rounded-pill px-3"><a href="{% url 'publish' post.pk %}" class="text-white">Unpublished</a></span> 
+                                {%else%}
+                                <span class="badge bg-secondary rounded-pill px-3">Unpublished</span> 
+                                {% endif %}
+                                {% endif %}
                             </td>
                             <td class="px-2 py-1 align-middle text-center">
                                 <a class="btn btn-outline-primary btn-sm edit-data" href="{% url 'edit-post' post.pk %}" data-id="{{ post.pk }}" title="Edit">
@@ -66,6 +82,7 @@
         </div>
     </div>
 </div>
+{% endif%}
 {% endblock pageContent %} {% block ScriptBlock %}
 <script>
     $(function() {
@@ -111,5 +128,7 @@
             }
         })
     }
+
+    
 </script>
 {% endblock ScriptBlock %}

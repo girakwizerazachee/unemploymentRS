@@ -1,35 +1,127 @@
 {% extends "base.html" %} {% load humanize %} {% block pageContent %}
 
 <!--Section: Content-->
+<main>
+<div class="row" id="MyData">
+
+
+
+
+  <div class="input-group justify-content-center">
+    <div class="form-outline">
+      <form action="{% url 'search' %}">
+      <input id="search-input"  id="form1" placeholder="search here..." name="search_query" class="form-control-lg bg-light text-dark form-control-block" required />
+      
+    </div>
+    <button id="search-button" type="submit" class="btn btn-primary">
+      <i class="fas fa-search"></i>
+    </button>
+  </form>
+  </div>
+
+
+
+
+
 <section class="text-center">
-    <h4 class="mb-5"><strong>All Posts</strong></h4>
+    <h4 class="mb-5"><strong></strong></h4>
 
     <div class="row">
-        {% for post in posts %}
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card shadow border">
-                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" class="img-fluid post-banner bg-gradient bg-dark" />
-                    <a href="#!">
-                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                    </a>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{ post.title }}</h5>
-                    <div class="card-text truncate-3">{{ post.blog_post|safe }} </div>
-                    <a href="{% url 'view-post' post.id %}" class="btn btn-primary">Read More..</a>
-                </div>
-            </div>
-        </div>
+        {% if page %}
+        {% for post in page %}
+            
+        <div class="card  py-1 p-2 shadow " style="width: 20rem;">
+          <img class="card-img-top" src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{post.blog_post|safe }}</p>
+          </div>
+         
+          <div class="card-body">
+            <a  href="{% url 'view-post' post.id %}"  class="btn  btn-primary">Read more..</a>
+           
+          </div>
+        </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
         {% endfor %}
+        <hr/>
+        <div class="container">
+          <div class="row text-lg-start"><h5>page :{{page.number}}/{{page.paginator.num_pages}}</h5></div>
+          <div class="row">
+              <div class="col">
+                  <nav aria-label="...">
+                      <ul class="pagination">
+                        <li class="page-item ">
+                          {% if page.has_previous %}
+                          <a class="page-link" href="{% url 'home-page' %}?page={{page.previous_page_number}}" >Previous</a>
+                          {% endif %}
+                        </li>
+                        {% for num_page in page.paginator.page_range %}
+                        <br/>
+                        {% if page.number == num_page%}
+                        <li class="page-item active"><a class="page-link" href="{% url 'home-page' %}?page={{num_number}}">{{num_page}}</a></li>
+                        {% endif %}
+                        <br/>
+                        {%endfor%}
+                        <li class="page-item">
+                          {% if page.has_next %}
+                          <a class="page-link" href="{% url 'home-page' %}?page={{page.next_page_number}}">Next</a>
+                          {% endif %}
+                        </li>
+                      </ul>
+                    </nav>
+              </div>
+          </div>
+      </div>
+        {% endif%}
 
 
     </div>
-    {% if not posts %}
-    <center>No Bogs has been posted yet</center>
+    {% if not page %}
+    <center>No post has been posted yet</center>
     {% endif %}
 
 </section>
 
 
-</div>  {% endblock pageContent %}
+</div> 
+</div>
+</main>
+{% endblock pageContent %}
+
+<script>
+
+("#search").on("keyup", function(){
+    var value = $(this).val();
+    console.log(value);
+    $("#MyData #MyRow").each(function(e){
+      if(e !== -1){
+        $go = $(this)
+
+        $go.find('#Data').each(function(){
+          var id = $(this).text();
+
+          if(id.indexOf(value) !==0 && id.toLowerCase().indexOf(value.toLowerCase()) < 0){
+            $go.hide();
+
+          }
+          else {
+            $go.show();
+            return false;
+          }
+        });
+      }
+      var isNone = $("#MyData #MyRow:not('#MyRow'):visible");
+
+      if(isNone.length == 0){
+        $("#no-result").text("No result Found").show();
+
+      }
+      else {
+        $("#no-result").text("No result Found").hide();
+
+      }
+    })
+  })
+</script>

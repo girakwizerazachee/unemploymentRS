@@ -14,7 +14,7 @@
                     <input type="hidden" name="id" value="{{ post.id }}"> {% if post.author %}
                     <input type="hidden" name="author" value="{{ post.author.id }}">
                     <span class="text-muted">Authored by: <b>{{ post.author }}</b></span> {% else %}
-                    <input type="hidden" name="author" value="{{ user.id }}"> {% endif %}
+                    <input type="hidden" name="author" value="{{ user.profile.id }}"> {% endif %}
                     <div class="form-group mb-3">
                         <label for="title" class="control-label">Title</label>
                         <input type="text" class="form-control rounded-0" id="title" name="title" value="{{ post.title }}" required>
@@ -41,20 +41,12 @@
                         <textarea class="form-control rounded-0 summernote" name="blog_post" id="blog_post" rows="5" required>{{ post.blog_post }}</textarea>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="status" class="control-label">Status</label>
-                        <select name="status" id="status" class="form-select rounded-0" required>
-                            {% if post.status == 1 or not post.status %}
-                            <option value="1" selected>Published</option>
-                            {% else %}
-                            <option value="1">Published</option>
-                            {% endif %}
-                            
-                            {% if post.status == 2 %}
-                            <option value="2" selected>Unpublished</option>
-                            {% else %}
-                            <option value="2">Unpublished</option>
-                            {% endif %}
-                        </select>
+                    {% if user.profile.user_type == 1 %}
+
+                    <input type="hidden" value="1" name="status">    
+                    {% else %}
+                    <input type="hidden" value="2" name="status"> 
+                    {% endif %}
                     </div>
                     
                     <div class="form-group mb-3">

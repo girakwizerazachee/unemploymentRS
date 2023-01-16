@@ -27,7 +27,11 @@
                                         </div>
                                         <div class="form-group mb-3">
                                             <label for="contact" class="control-label">Contact</label>
+                                            {% if userProfile.contact == "" %}
                                             <input type="text" class="form-control rounded-0" name="contact" id="contact" value="{{ userProfile.contact }}" required="required">
+                                            {%else%}
+                                            <input type="text" class="form-control rounded-0" name="contact" id="contact" value="0{{ userProfile.contact }}" required="required">
+                                            {%endif%}
                                         </div>
                                         <div class="form-group mb-3">
                                             <label for="address" class="control-label">Address</label>

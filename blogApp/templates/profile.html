@@ -20,7 +20,13 @@
                                     <dt class="text-muted">Birthday</dt>
                                     <dd class="ps-4">{{ user.profile.dob|date:"F d, Y" }}</dd>
                                     <dt class="text-muted">Contact #</dt>
-                                    <dd class="ps-4">{{ user.profile.contact }}</dd>
+                                    <dd class="ps-4">
+                                        {% if user.profile.contact == "" %}
+                                        {{ user.profile.contact }}
+                                        {%else%}
+                                        0{{ user.profile.contact }}
+                                        {%endif%}
+                                    </dd>
                                     <dt class="text-muted">Address</dt>
                                     <dd class="ps-4">{{ user.profile.address }}</dd>
                                     <dt class="text-muted">Email</dt>

@@ -1,6 +1,15 @@
 {% extends "base.html" %} {% load crispy_forms_filters %}
 {% load crispy_forms_tags %} {% load humanize %} {% block pageContent %}
 
+
+
+
+
+
+
+
+
+
 <!--Section: Content-->
 <section class="text-center">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -10,9 +19,11 @@
                     <h4 class="card-title fw-bold"></h4>
                 </div>
                 <div class="card-body">
-                    <center>
-                        <img src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" alt="" class="img-fluid bg-gradient" id="view-post-banner">
-                    </center>
+                    <figure class="figure">
+                        <img src="{% if post.banner %}{{ post.banner.url }}{% else %}{{ MEDIA_URL}}/media/default/python-django.png{% endif %}" height="600px" width="100%" class="card-img-top" alt="...">
+                        <figcaption class="figure-caption">{{ post.title }}</figcaption>
+                      </figure>
+                    
                     <h4 class="fw-bolder mt-4 text-start">{{ post.title }}</h4>
                     <hr>
                     <div class="lh-1 text-start">
@@ -31,53 +42,76 @@
    
 </section>
 <br/>
+    <!-- ======= F.A.Q Section ======= -->
+    {% if not post.comments.all  %}
+    <div class="container">No comments available</div>
+{% endif %}     
+{% if post.comments.all  %}
+
+    <section id="faq" class="faq bg-light">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          
+          <p>Comments</p>
+        </div>
+
+        <ul class="faq-list" data-aos="fade-up" data-aos-delay="100">
+          {% for comment in post.comments.all %}
+          <li>
+            <div data-bs-toggle="collapse" class="collapsed question text-dark" href="#faq{{ forloop.counter }}">{{comment.name}} <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small class=" align-left text-sm">{{comment.email}}</small>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small class=" align-left text-sm">{{comment.created_on}}</small> </div>
+            <div id="faq1" class="collapse" data-bs-parent=".faq-list">
+              <p>
+                {{comment.body}}
+              </p>
+            </div>
+          </li>
+          {% endfor %}
+
+        </ul>
+
+      </div>
+    {% endif%}
+    </section><!-- End F.A.Q Section -->
 
 
-<div>
-
-</div>
-
-<div class="container">
   
     
         
-          
-            
-
-            {% if not post.comments.all  %}
-                <div class="container">No comments available</div>
-            {% endif %}     
-            {% if post.comments.all  %}
-
-            <h5 class="card-title text-success">List of Comments</h5>
-            <div class="row">
-                <div class="col"><h3>Name :</h3></div> <div class="col"><h3>Comment :</h3></div> 
-                </div>
-            
-            {% endif %}   
-
-            {% for comment in post.comments.all %}
-           <div class="row">
-           <div class="col">{{comment.name}}</div> <div class="col">{{comment.body}}</div> 
-           </div>
-            {% endfor%}
-           
-        
-
+      
              
-
-    <h1><center>Leave a comment</center></h1>
-    <form class="form-group" method="POST">
-        <div class="row">
-        <div class="col">   
+    <div class="container justify-content-center">
+    <h1 class="mt-4">Leave a comment</h1>
+    <hr/>
+   
+    <form method="post" class="form-group centered post-form form-horizonta bg-light">
         {% csrf_token %}
-        {{form|crispy}}
-        </div> 
+        <div class="form-row">
+          <div class="form-group col-md-6 mb-0">
+            {{ form.email|as_crispy_field }}
+          </div>
+          <div class="form-group col-md-6 mb-0">
+            {{ form.name|as_crispy_field }}
+          </div>
         </div>
-        <br/>
-        <div class="row"><input type="submit" value="Comment" class="btn btn-success btn-lg btn-block" /><br></div>
+       
+        <div class="form-row">
+          <div class="form-group col-md-6 mb-0">
+            {{ form.body|as_crispy_field }}
+          </div>
+          
+        </div>
         
-    </form>
+        <div class="form-row mt-3">
+            <div class="form-group col-md-6 mb-0">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">comment</button>
+    </div>
+          
+</div>
+      </form>
+ 
+
+</div>
 </div>
 
 </div>{% endblock pageContent %}

@@ -16,6 +16,8 @@ urlpatterns = [
     path('aboutus', views.aboutus, name="aboutus"),
     path('update-profile',views.update_profile,name='update-profile'),
     path('update-avatar',views.update_avatar,name='update-avatar'),
+    
+    path('search',views.search,name='search'),
     path('category_mgt',views.category_mgt,name='category-mgt'),
     path('manage_category',views.manage_category,name='manage-category'),
     path(r'manage_category/<int:pk>',views.manage_category,name='edit-category'),
@@ -28,6 +30,7 @@ urlpatterns = [
     path('post_mgt',views.post_mgt,name='post-mgt'),
     path('manage_post',views.manage_post,name='manage-post'),
     path(r'manage_post/<int:pk>',views.manage_post,name='edit-post'),
+    path('publish/<int:pk>',views.publish,name='publish'),
     path('save_post',views.save_post,name='save-post'),
     path('delete_post',views.delete_post,name='delete-post'),
     path(r'view_post/<int:pk>',views.view_post,name='view-post'),

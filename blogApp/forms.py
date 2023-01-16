@@ -1,4 +1,5 @@
 from unicodedata import category
+import datetime
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
@@ -66,10 +67,14 @@ class UpdateProfile(forms.ModelForm):
 
 
 class UpdateProfileMeta(forms.ModelForm):
-    dob = forms.DateField(help_text="The Birthday field is required.")
-    contact = forms.CharField(max_length=250,help_text="The Contact field is required.")
-    address = forms.CharField(help_text="The Contact field is required.")
-
+    dob = forms.DateField(
+        label='What is your birth date?', 
+        # change the range of the years from 1980 to currentYear - 5
+        widget=forms.SelectDateWidget(years=range(1980, datetime.date.today().year-5)))
+    
+    
+    contact = forms.IntegerField(help_text="The Contact field is required.")
+    address = forms.CharField(help_text="The address field is required.")
     class Meta:
         model = UserProfile
         fields = ('dob', 'contact', 'address')
@@ -158,6 +163,7 @@ class SavePost(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+    
     class Meta:
         model = Comment
         fields = ('name', 'email', 'body')
